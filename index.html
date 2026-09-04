@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Seymore Green — Custom T-Shirt Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://www.paypal.com/sdk/js?client-id=AesZd3aTLxNIsaTDKt81DDpKOwh_itX9QoEF8kjTIsXOOZrnYvSdZWtnGopQ7MjuSJPC1r2hgs9zBOO8&currency=USD&intent=capture"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4BBB2A;--dk:#1e1e1e;--card:#272727;--inp:#2f2f2f;--bdr:#3a3a3a;--gr:#888;--wh:#fff;--rd:#ff5555}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{background:#111;border-bottom:2px solid #222;padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{width:40px;height:40px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--dk);flex-shrink:0}
+.ht h1{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;line-height:1}
+.ht p{font-size:10px;color:var(--gr);letter-spacing:1.5px;text-transform:uppercase}
+.prog-wrap{max-width:520px;margin:0 auto;padding:20px 20px 0}
+.prog-track{height:3px;background:#333;border-radius:2px;margin-bottom:6px}
+.prog-fill{height:100%;background:var(--g);border-radius:2px;transition:width .4s ease}
+.step-labels{display:flex;justify-content:space-between}
+.slbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--gr);transition:color .3s}
+.slbl.active{color:var(--g);font-weight:700}
+.container{max-width:520px;margin:0 auto;padding:24px 20px 80px}
+.panel{display:none}
+.panel.active{display:block}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--g);letter-spacing:2px;line-height:1;margin-bottom:4px}
+.ssub{color:var(--gr);font-size:13px;margin-bottom:24px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field label{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.field label span{color:var(--g)}
+.field input,.field select,.field textarea{background:var(--inp);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;color:var(--wh);font-size:15px;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--g)}
+.field textarea{resize:vertical;min-height:90px}
+.err-msg{font-size:11px;color:var(--rd);margin-top:4px;display:none}
+.err-msg.show{display:block}
+.field.has-err input,.field.has-err select,.field.has-err textarea{border-color:var(--rd)}
+.size-row{display:flex;align-items:center;background:var(--card);border-radius:10px;padding:11px 14px;margin-bottom:8px}
+.sz-lbl{font-weight:700;font-size:14px;width:40px}
+.upch{font-size:10px;color:var(--g);margin-left:4px}
+.qty-btn{width:32px;height:32px;border-radius:8px;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:700;transition:transform .1s}
+.qty-btn:active{transform:scale(.9)}
+.qty-btn.minus{background:#333;color:var(--wh)}
+.qty-btn.plus{background:var(--g);color:var(--dk)}
+.qty-val{width:36px;text-align:center;font-weight:800;font-size:16px}
+.tier-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tier-pill{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;background:var(--card);color:var(--gr);border:1px solid var(--bdr);transition:all .2s}
+.tier-pill.active{background:var(--g);color:var(--dk);border-color:var(--g)}
+.price-card{background:#111;border-radius:14px;padding:18px;border:1px solid var(--bdr);margin-top:16px;transition:border-color .3s}
+.price-card.ready{border-color:var(--g)}
+.price-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px}
+.price-row .lbl{color:var(--gr)}
+.price-row .val{font-weight:700}
+.pdiv{height:1px;background:#2a2a2a;margin:12px 0}
+.total-row{display:flex;justify-content:space-between;align-items:center}
+.total-lbl{font-weight:800;font-size:15px}
+.total-amt{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--g);line-height:1}
+.min-warn{color:var(--rd);font-size:12px;font-weight:700;text-align:center;padding:8px}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 15px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--bdr);background:var(--card);color:var(--gr);transition:all .15s;-webkit-tap-highlight-color:transparent}
+.chip.sel{background:var(--g);color:var(--dk);border-color:var(--g)}
+.dlv-toggle{display:flex;gap:10px;margin-bottom:14px}
+.dlv-btn{flex:1;padding:14px 10px;border-radius:12px;border:2px solid var(--bdr);background:var(--card);color:var(--gr);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;line-height:1.4}
+.dlv-btn.active{border-color:var(--g);color:var(--wh);background:rgba(75,187,42,.1)}
+.dlv-btn .dico{font-size:22px;display:block;margin-bottom:4px}
+.pickup-info{background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:14px;border-left:3px solid var(--g)}
+.pickup-info .pi-lbl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.pickup-info .pi-addr{color:var(--wh);font-size:14px;font-weight:700;line-height:1.6}
+.pickup-info .pi-note{color:var(--gr);font-size:12px;margin-top:6px}
+.ship-fields{display:none}
+.ship-fields.show{display:block}
+.free-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(75,187,42,.15);border:1px solid var(--g);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--g);margin-bottom:14px}
+.ship-note{font-size:12px;color:var(--gr);margin-bottom:14px}
+.file-info{background:var(--card);border:1px dashed #444;border-radius:12px;padding:16px;margin-top:4px}
+.file-info .fi-lbl{color:var(--gr);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.file-info .fi-contact{color:var(--wh);font-size:13px;line-height:1.6}
+.file-info .fi-contact strong{color:var(--g)}
+.file-info .fi-fmt{color:var(--gr);font-size:11px;margin-top:8px}
+.file-upload{margin-top:12px}
+.file-upload input[type=file]{display:block;width:100%;background:var(--inp);border:1px solid var(--bdr);border-radius:10px;padding:12px;color:var(--wh);font-family:'DM Sans',sans-serif}
+.art-preview-wrap{display:none;margin-top:12px;background:#111;border:1px solid var(--bdr);border-radius:12px;padding:12px;text-align:center}
+.art-preview-wrap.show{display:block}
+.art-preview{display:block;max-width:100%;max-height:280px;margin:0 auto;border-radius:8px;object-fit:contain;background:#fff}
+.art-name{margin-top:8px;font-size:11px;color:var(--gr);word-break:break-word}
+.review-row{background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.review-row .rl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
+.review-row .rv{color:var(--wh);font-size:14px;line-height:1.5}
+.paypal-section{margin-top:20px}
+.pp-lbl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px;display:block}
+#pp-btn-container{min-height:48px}
+.pp-note{font-size:11px;color:var(--gr);text-align:center;margin-top:10px;line-height:1.5}
+.nav-row{display:flex;gap:10px;margin-top:28px}
+.btn-back{flex:1;padding:15px;border-radius:12px;background:var(--card);border:1px solid var(--bdr);color:var(--wh);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-back:hover{background:#333}
+.btn-next{flex:2;padding:15px;border-radius:12px;background:var(--g);border:none;color:var(--dk);font-size:16px;font-weight:800;cursor:pointer;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:opacity .15s}
+.btn-next:active{opacity:.85}
+#success{display:none;min-height:100vh;background:var(--dk);align-items:center;justify-content:center;padding:40px 24px;text-align:center;flex-direction:column}
+.s-icon{font-size:72px;margin-bottom:16px}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--g);letter-spacing:3px;margin-bottom:12px}
+.s-sub{color:var(--gr);font-size:15px;line-height:1.6;max-width:340px;margin:0 auto 24px}
+.s-summary{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:360px;text-align:left;margin-bottom:12px}
+.s-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px}
+.s-total{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--g)}
+.footer{text-align:center;color:#444;font-size:11px;margin-top:20px}
+
+.admin-link{margin-left:auto;background:transparent;border:1px solid #333;color:#777;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.admin-link:hover{border-color:var(--g);color:var(--g)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;padding:20px;align-items:center;justify-content:center;overflow:auto}
+.modal.show{display:flex}.modal-card{background:#1b1b1b;border:1px solid #3a3a3a;border-radius:16px;width:100%;max-width:520px;padding:22px;max-height:90vh;overflow:auto}
+.modal-title{font-family:'Bebas Neue',sans-serif;color:var(--g);font-size:32px;letter-spacing:2px;margin-bottom:5px}.modal-sub{font-size:12px;color:var(--gr);margin-bottom:18px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.admin-grid .field{margin-bottom:6px}.admin-actions{display:flex;gap:10px;margin-top:18px}.admin-actions button{flex:1;padding:13px;border-radius:10px;font-weight:800;cursor:pointer}
+.admin-save{background:var(--g);border:0;color:#111}.admin-cancel{background:#2c2c2c;border:1px solid #444;color:#fff}.admin-status{font-size:12px;margin-top:10px;color:var(--gr)}
+.art-required{font-size:11px;color:var(--gr);margin-top:8px}.uploading{font-size:12px;color:var(--g);font-weight:700;text-align:center;margin-top:10px}
+@media(max-width:520px){.admin-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <div class="logo">SG</div>
+    <div class="ht"><h1>SEYMORE GREEN</h1><p>Custom T-Shirt Order</p></div><button class="admin-link" onclick="openAdminLogin()">Admin</button>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:25%"></div></div>
+    <div class="step-labels">
+      <span class="slbl active" id="l1">Contact</span>
+      <span class="slbl" id="l2">Shirts</span>
+      <span class="slbl" id="l3">Design</span>
+      <span class="slbl" id="l4">Pay</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- STEP 1 -->
+    <div class="panel active" id="s1">
+      <div class="stitle">YOUR INFO</div>
+      <div class="ssub">We'll confirm your order within 24 hours.</div>
+      <div class="field" id="f-name"><label>Full Name <span>*</span></label><input type="text" id="i-name" placeholder="John Smith" autocomplete="name"/><div class="err-msg" id="e-name">Name is required</div></div>
+      <div class="field" id="f-email"><label>Email <span>*</span></label><input type="email" id="i-email" placeholder="you@email.com" autocomplete="email"/><div class="err-msg" id="e-email">Valid email required</div></div>
+      <div class="field" id="f-phone"><label>Phone <span>*</span></label><input type="tel" id="i-phone" placeholder="(617) 555-0100" autocomplete="tel"/><div class="err-msg" id="e-phone">Valid phone required</div></div>
+      <div class="nav-row"><button class="btn-next" style="flex:3" onclick="goNext(1)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="panel" id="s2">
+      <div class="stitle">SHIRT DETAILS</div>
+      <div class="ssub">Gildan G500 · 6-shirt minimum · Prices drop as qty goes up</div>
+      <div class="field" id="f-color"><label>Shirt Color <span>*</span></label>
+        <select id="i-color">
+          <option value="">-- Select Color --</option>
+          <option>White</option><option>Black</option><option>Ash Gray</option><option>Navy</option><option>Royal Blue</option><option>Red</option><option>Forest Green</option><option>Maroon</option><option>Purple</option><option>Gold</option><option>Orange</option><option>Sport Gray</option><option>Light Blue</option><option>Charcoal</option>
+        </select>
+        <div class="err-msg" id="e-color">Select a shirt color</div>
+      </div>
+      <div class="field" id="f-qty"><label>Sizes & Quantities <span>*</span></label><div id="size-rows"></div><div class="err-msg" id="e-qty">Minimum 6 shirts required</div></div>
+      <div class="price-card" id="price-card"><div id="price-body"><div class="min-warn">Add at least 6 shirts to unlock pricing</div></div></div>
+      <div style="margin-top:16px"><div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">Pricing Tiers</div><div class="tier-wrap" id="tier-pills"></div></div>
+      <div class="field" id="f-loc" style="margin-top:20px"><label>Print Location(s) <span>*</span></label><div class="chip-wrap" id="loc-chips"></div><div class="err-msg" id="e-loc">Select at least one location</div></div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(2)">← Back</button><button class="btn-next" onclick="goNext(2)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="panel" id="s3">
+      <div class="stitle">DESIGN & DELIVERY</div>
+      <div class="ssub">Tell us what you want — and how you want it.</div>
+      <div class="field" id="f-desc"><label>Design Description <span>*</span></label><textarea id="i-desc" placeholder="Ex: Logo on front left chest, team name on back. Red & white on black."></textarea><div class="err-msg" id="e-desc">Please describe your design</div></div>
+      <div class="field"><label>Special Notes / Deadline</label><textarea id="i-notes" placeholder="Need by a specific date? Anything else..."></textarea></div>
+      <div class="file-info">
+        <div class="fi-lbl">📎 Upload Your Art File</div>
+        <div class="fi-contact">Choose your artwork below. Image files will show a preview so you can confirm you selected the right design.</div>
+        <div class="file-upload"><input type="file" id="i-art" accept="image/png,image/jpeg,image/webp,image/gif,.pdf,.ai,.svg" onchange="previewArt(this)"/></div>
+        <div class="art-preview-wrap" id="art-preview-wrap">
+          <img id="art-preview" class="art-preview" alt="Uploaded artwork preview"/>
+          <div class="art-name" id="art-name"></div>
+        </div>
+        <div class="fi-fmt">Preview supported for PNG · JPG · WEBP · GIF · SVG. PDF/AI files will show the filename only.</div><div class="art-required">Your uploaded artwork is saved with the paid order so Seymore Green can open it directly from the order sheet.</div>
+        <div class="fi-contact" style="margin-top:10px">Need to send a production file separately? Email: <strong>orders@seymoregreen.com</strong></div>
+      </div>
+      <div style="margin-top:24px">
+        <div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px">Pickup or Shipping? <span style="color:var(--g)">*</span></div>
+        <div class="dlv-toggle">
+          <button class="dlv-btn active" id="b-pickup" onclick="setDlv('pickup')"><span class="dico">🏪</span>Free Pickup<br/><span style="font-size:11px;font-weight:400">Roslindale</span></button>
+          <button class="dlv-btn" id="b-ship" onclick="setDlv('ship')"><span class="dico">📦</span>Ship to Me<br/><span style="font-size:11px;font-weight:400" id="ship-sub">Free over $250</span></button>
+        </div>
+        <div class="pickup-info" id="pickup-info">
+          <div class="pi-lbl">📍 Pickup Location</div>
+          <div class="pi-addr">35 Poplar Street<br/>Roslindale, MA 02131</div>
+          <div class="pi-note">We'll text you when your order is ready. Always free — no fees.</div>
+        </div>
+        <div class="ship-fields" id="ship-fields">
+          <div id="ship-note-wrap"></div>
+          <div class="field" id="f-addr"><label>Street Address <span>*</span></label><input type="text" id="i-addr" placeholder="123 Main St, Apt 2" autocomplete="street-address"/><div class="err-msg" id="e-addr">Address required</div></div>
+          <div style="display:flex;gap:10px">
+            <div class="field" id="f-city" style="flex:2"><label>City <span>*</span></label><input type="text" id="i-city" placeholder="Boston" autocomplete="address-level2"/><div class="err-msg" id="e-city">City required</div></div>
+            <div class="field" id="f-zip" style="flex:1"><label>ZIP <span>*</span></label><input type="text" id="i-zip" placeholder="02131" maxlength="5" inputmode="numeric"/><div class="err-msg" id="e-zip">Valid ZIP</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(3)">← Back</button><button class="btn-next" onclick="goNext(3)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="panel" id="s4">
+      <div class="stitle">REVIEW & PAY</div>
+      <div class="ssub">Confirm everything. Pay to lock in your slot.</div>
+      <div id="review-rows"></div>
+      <div class="price-card ready" style="margin-top:8px">
+        <div class="price-row"><span class="lbl">Total Shirts</span><span class="val" id="r-qty">—</span></div>
+        <div class="price-row"><span class="lbl">Price / Shirt</span><span class="val" id="r-pps">—</span></div>
+        <div class="pdiv"></div>
+        <div class="total-row"><span class="total-lbl">TOTAL DUE</span><span class="total-amt" id="r-total">$0</span></div>
+        <div id="r-freeship" style="display:none;margin-top:10px" class="free-badge">🚚 FREE SHIPPING INCLUDED</div>
+        <div style="font-size:11px;color:var(--gr);margin-top:10px">Full payment secures your order. Production begins after payment clears.</div>
+      </div>
+      <div class="paypal-section">
+        <span class="pp-lbl">💳 Secure Payment via PayPal</span>
+        <div id="pp-btn-container"></div>
+        <p class="pp-note">Pay with PayPal, credit or debit card — secured by PayPal</p>
+      </div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(4)">← Back</button></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success">
+  <div class="s-icon">✅</div>
+  <div class="s-title">ORDER LOCKED IN</div>
+  <p class="s-sub">Payment received. We'll reach out to confirm your design and production timeline.</p>
+  <div class="s-summary">
+    <div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Order Summary</div>
+    <div class="s-row"><span style="color:var(--gr)">Customer</span><span id="ss-name" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Shirts</span><span id="ss-qty" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Color</span><span id="ss-color" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Delivery</span><span id="ss-dlv" style="font-weight:700">—</span></div>
+    <div class="s-row" style="margin-top:10px;border-top:1px solid #333;padding-top:10px"><span style="font-weight:800">PAID</span><span class="s-total" id="ss-total">$0</span></div>
+  </div>
+  <p style="color:var(--gr);font-size:13px">Questions? Text <strong style="color:var(--g)">844-473-9667</strong></p>
+  <p class="footer">Click & Print 24-7 · 35 Poplar St, Roslindale MA 02131 · seymoregreen.com</p>
+</div>
+
+
+<!-- ADMIN -->
+<div class="modal" id="admin-modal">
+  <div class="modal-card">
+    <div id="admin-login-view">
+      <div class="modal-title">ADMIN</div>
+      <div class="modal-sub">Enter your admin code to manage pricing and store settings.</div>
+      <div class="field"><label>Admin Code</label><input type="password" id="admin-code" placeholder="Admin code"/></div>
+      <div class="admin-actions"><button class="admin-cancel" onclick="closeAdmin()">Cancel</button><button class="admin-save" onclick="adminLogin()">Unlock</button></div>
+      <div class="admin-status" id="admin-login-status"></div>
+    </div>
+    <div id="admin-settings-view" style="display:none">
+      <div class="modal-title">CUSTOM TEES ADMIN</div>
+      <div class="modal-sub">Changes save to your Apps Script settings and load for customers on the live app.</div>
+      <div class="admin-grid">
+        <div class="field"><label>6–9 Price</label><input type="number" step="0.01" id="a-tier-6"></div>
+        <div class="field"><label>10–24 Price</label><input type="number" step="0.01" id="a-tier-10"></div>
+        <div class="field"><label>25–49 Price</label><input type="number" step="0.01" id="a-tier-25"></div>
+        <div class="field"><label>50–99 Price</label><input type="number" step="0.01" id="a-tier-50"></div>
+        <div class="field"><label>100+ Price</label><input type="number" step="0.01" id="a-tier-100"></div>
+        <div class="field"><label>Free Shipping At</label><input type="number" step="1" id="a-free-min"></div>
+        <div class="field"><label>2XL Upcharge</label><input type="number" step="0.01" id="a-2xl"></div>
+        <div class="field"><label>3XL Upcharge</label><input type="number" step="0.01" id="a-3xl"></div>
+        <div class="field"><label>Phone</label><input type="text" id="a-phone"></div>
+        <div class="field"><label>Order Email</label><input type="email" id="a-email"></div>
+      </div>
+      <div class="admin-actions"><button class="admin-cancel" onclick="closeAdmin()">Close</button><button class="admin-save" onclick="saveAdminSettings()">Save Changes</button></div>
+      <div class="admin-status" id="admin-save-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ ONLY ONE THING LEFT TO SWAP ══════════════════════════════
+// Paste your Google Apps Script URL below after you deploy it
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBcJJe3Tq3TTU0qmCqOyQLOwyQFUx4abQ87CVDW_RwmFD7Zpk_4VVv6IPfNLMedFi7/exec";
+let FREE_MIN = 250;
+// ═════════════════════════════════════════════════════════════
+
+let TIERS=[{min:6,max:9,price:25,label:"6–9"},{min:10,max:24,price:22,label:"10–24"},{min:25,max:49,price:20,label:"25–49"},{min:50,max:99,price:18,label:"50–99"},{min:100,max:Infinity,price:16,label:"100+"}];
+const SIZES=["XS","S","M","L","XL","2XL","3XL"];
+let UPCHARGE={"2XL":3,"3XL":4};
+let CONTACT_PHONE="844-473-9667";
+let ORDER_EMAIL="orders@seymoregreen.com";
+const LOCS=["Front Center","Back Center","Left Chest","Right Chest","Full Front","Full Back","Sleeve (L)","Sleeve (R)"];
+
+const state={name:"",email:"",phone:"",color:"",qty:Object.fromEntries(SIZES.map(s=>[s,0])),locs:[],desc:"",notes:"",dlv:"pickup",addr:"",city:"",zip:"",artFileName:"",artFileType:"",artFileData:""};
+let step=1;
+
+const totalQty=()=>SIZES.reduce((s,z)=>s+(state.qty[z]||0),0);
+const getTier=q=>TIERS.find(t=>q>=t.min&&q<=t.max);
+const grandTotal=()=>{const t=getTier(totalQty());if(!t)return 0;return SIZES.reduce((s,z)=>{const n=state.qty[z]||0,u=UPCHARGE[z]||0;return s+n*(t.price+u);},0);};
+
+function buildUI(){
+  const sr=document.getElementById("size-rows");
+  SIZES.forEach(sz=>{const r=document.createElement("div");r.className="size-row";r.innerHTML=`<span class="sz-lbl">${sz}</span>${UPCHARGE[sz]?`<span class="upch">+$${UPCHARGE[sz]}</span>`:''}<span style="flex:1"></span><button class="qty-btn minus" onclick="chgQty('${sz}',-1)">−</button><span class="qty-val" id="qv-${sz}">0</span><button class="qty-btn plus" onclick="chgQty('${sz}',1)">+</button>`;sr.appendChild(r);});
+  const tp=document.getElementById("tier-pills");
+  TIERS.forEach(t=>{const e=document.createElement("div");e.className="tier-pill";e.id=`tp-${t.min}`;e.textContent=`${t.label} = $${t.price}/shirt`;tp.appendChild(e);});
+  const lc=document.getElementById("loc-chips");
+  LOCS.forEach(loc=>{const e=document.createElement("div");e.className="chip";e.textContent=loc;e.onclick=()=>{const i=state.locs.indexOf(loc);if(i===-1){state.locs.push(loc);e.classList.add("sel");}else{state.locs.splice(i,1);e.classList.remove("sel");}};lc.appendChild(e);});
+}
+
+function chgQty(sz,d){
+  state.qty[sz]=Math.max(0,(state.qty[sz]||0)+d);
+  document.getElementById(`qv-${sz}`).textContent=state.qty[sz];
+  updatePrice();updateTiers();
+  if(state.dlv==="ship")updateShipNote();
+}
+
+function updatePrice(){
+  const qty=totalQty(),tier=getTier(qty),card=document.getElementById("price-card"),body=document.getElementById("price-body");
+  if(!tier){card.classList.remove("ready");body.innerHTML=`<div class="min-warn">Add ${6-qty} more shirt${qty===5?"":"s"} to unlock pricing</div>`;return;}
+  card.classList.add("ready");const total=grandTotal();
+  const fs=total>=FREE_MIN?`<span style="color:var(--g);font-weight:700"> · ✅ Free shipping!</span>`:`<span> · Free ship over $${FREE_MIN}</span>`;
+  body.innerHTML=`<div class="price-row"><span class="lbl">Total Shirts</span><span class="val">${qty}</span></div><div class="price-row"><span class="lbl">Price / Shirt</span><span class="val">$${tier.price}</span></div><div class="pdiv"></div><div class="total-row"><span class="total-lbl">EST. TOTAL</span><span class="total-amt">$${total.toFixed(2)}</span></div><div style="font-size:11px;color:var(--gr);margin-top:8px">2XL +$3 · 3XL +$4 · Blank + DTF print included${fs}</div>`;
+}
+
+function updateTiers(){
+  const tier=getTier(totalQty());
+  TIERS.forEach(t=>{const e=document.getElementById(`tp-${t.min}`);if(e)e.className="tier-pill"+(tier&&tier.min===t.min?" active":"");});
+}
+
+function setDlv(m){
+  state.dlv=m;
+  document.getElementById("b-pickup").classList.toggle("active",m==="pickup");
+  document.getElementById("b-ship").classList.toggle("active",m==="ship");
+  document.getElementById("pickup-info").style.display=m==="pickup"?"block":"none";
+  document.getElementById("ship-fields").classList.toggle("show",m==="ship");
+  if(m==="ship")updateShipNote();
+}
+
+function updateShipNote(){
+  const total=grandTotal(),sub=document.getElementById("ship-sub"),wrap=document.getElementById("ship-note-wrap");
+  if(total>=FREE_MIN){sub.textContent="✅ Free shipping!";wrap.innerHTML='<div class="free-badge">🚚 FREE SHIPPING — your order qualifies!</div>';}
+  else{sub.textContent=`Free over $${FREE_MIN}`;wrap.innerHTML=`<div class="ship-note">Add $${(FREE_MIN-total).toFixed(2)} more for free shipping</div>`;}
+}
+
+function previewArt(input){
+  const file=input.files&&input.files[0];
+  const wrap=document.getElementById("art-preview-wrap"),img=document.getElementById("art-preview"),name=document.getElementById("art-name");
+  if(!file){state.artFileName="";state.artFileType="";state.artFileData="";wrap.classList.remove("show");img.removeAttribute("src");name.textContent="";return;}
+  if(file.size>10*1024*1024){alert("Please use an artwork file 10 MB or smaller for this order form.");input.value="";return previewArt(input);}
+  state.artFileName=file.name;state.artFileType=file.type||"application/octet-stream";name.textContent=`Selected: ${file.name}`;wrap.classList.add("show");
+  const reader=new FileReader();
+  reader.onload=e=>{state.artFileData=e.target.result;if(file.type.startsWith("image/")){img.src=e.target.result;img.style.display="block";}else{img.removeAttribute("src");img.style.display="none";}};
+  reader.readAsDataURL(file);
+}
+
+function buildReview(){
+  const qty=totalQty(),tier=getTier(qty),total=grandTotal();
+  const isShip=state.dlv==="ship",free=isShip&&total>=FREE_MIN;
+  const szList=SIZES.filter(s=>state.qty[s]>0).map(s=>`${s} × ${state.qty[s]}`).join(", ");
+  const dlvVal=isShip?`Ship to: ${state.addr}, ${state.city} MA ${state.zip}${free?" — ✅ FREE":""}`:"🏪 Pickup — 35 Poplar St, Roslindale MA 02131";
+  const rows=[["Customer",`${state.name} · ${state.email} · ${state.phone}`],["Shirt Color",state.color],["Sizes",szList],["Print Locations",state.locs.join(", ")],["Design",state.desc],...(state.artFileName?[["Artwork File",state.artFileName]]:[]),...(state.notes?[["Notes",state.notes]]:[]),["Delivery",dlvVal]];
+  document.getElementById("review-rows").innerHTML=rows.map(([k,v])=>`<div class="review-row"><div class="rl">${k}</div><div class="rv" style="color:${k==="Delivery"&&free?"var(--g)":"var(--wh)"}">${v}</div></div>`).join("");
+  document.getElementById("r-qty").textContent=qty;
+  document.getElementById("r-pps").textContent=tier?`$${tier.price}`:"—";
+  document.getElementById("r-total").textContent=`$${total.toFixed(2)}`;
+  document.getElementById("r-freeship").style.display=(isShip&&free)?"flex":"none";
+  renderPayPal(total);
+}
+
+function renderPayPal(amount){
+  const c=document.getElementById("pp-btn-container");c.innerHTML="";
+  if(!window.paypal){c.innerHTML='<div style="color:var(--rd);font-size:13px;padding:12px;background:var(--card);border-radius:10px">⚠️ PayPal failed to load. Check your internet connection.</div>';return;}
+  paypal.Buttons({
+    style:{shape:"rect",color:"gold",layout:"vertical",label:"pay"},
+    createOrder:(d,a)=>a.order.create({purchase_units:[{description:`Seymore Green Custom T-Shirts (${totalQty()} shirts)`,amount:{currency_code:"USD",value:amount.toFixed(2)}}]}),
+    onApprove:async(d,a)=>{const o=await a.order.capture();const c=document.getElementById("pp-btn-container");c.innerHTML='<div class="uploading">Saving your paid order and artwork…</div>';await fireSheet(o);showSuccess();},
+    onError:e=>{console.error(e);alert("Payment failed. Please try again or contact us directly.");}
+  }).render("#pp-btn-container");
+}
+
+async function fireSheet(ppOrder){
+  const qty=totalQty(),tier=getTier(qty),total=grandTotal();
+  const isShip=state.dlv==="ship",free=isShip&&total>=FREE_MIN;
+  const payload={action:"order",order_date:new Date().toLocaleString(),name:state.name,email:state.email,phone:state.phone,shirt_color:state.color,sizes:SIZES.map(s=>`${s}:${state.qty[s]||0}`).join(", "),total_qty:qty,print_locations:state.locs.join(", "),design_desc:state.desc,art_file_name:state.artFileName||"N/A",art_file_type:state.artFileType||"application/octet-stream",art_file_data:state.artFileData||"",special_notes:state.notes,delivery:isShip?`Ship — ${state.addr}, ${state.city} MA ${state.zip}`:"Pickup — 35 Poplar St, Roslindale MA 02131",ship_address:isShip?`${state.addr}, ${state.city} MA ${state.zip}`:"N/A",free_shipping:free?"YES":isShip?"NO":"N/A",price_per_shirt:tier?tier.price:0,grand_total:total,paypal_id:ppOrder?.id||"N/A",status:"Paid"};
+  try{
+    await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    return true;
+  }catch(e){console.error("Order save failed",e);return false;}
+}
+
+function showSuccess(){
+  document.getElementById("app").style.display="none";
+  const s=document.getElementById("success");s.style.display="flex";
+  document.getElementById("ss-name").textContent=state.name;
+  document.getElementById("ss-qty").textContent=`${totalQty()} shirts`;
+  document.getElementById("ss-color").textContent=state.color;
+  document.getElementById("ss-dlv").textContent=state.dlv==="ship"?`Ship to ${state.addr}, ${state.city}`:"Pickup — 35 Poplar St";
+  document.getElementById("ss-total").textContent=`$${grandTotal().toFixed(2)}`;
+}
+
+const V={
+  1:()=>{
+    state.name=document.getElementById("i-name").value.trim();
+    state.email=document.getElementById("i-email").value.trim();
+    state.phone=document.getElementById("i-phone").value.trim();
+    const ok=!(!state.name||!state.email.includes("@")||state.phone.replace(/\D/g,"").length<10);
+    se("f-name","e-name",!state.name);se("f-email","e-email",!state.email.includes("@"));se("f-phone","e-phone",state.phone.replace(/\D/g,"").length<10);
+    return ok;
+  },
+  2:()=>{
+    state.color=document.getElementById("i-color").value;
+    const ok=!(!state.color||totalQty()<6||!state.locs.length);
+    se("f-color","e-color",!state.color);se("f-qty","e-qty",totalQty()<6);se("f-loc","e-loc",!state.locs.length);
+    return ok;
+  },
+  3:()=>{
+    state.desc=document.getElementById("i-desc").value.trim();
+    state.notes=document.getElementById("i-notes").value.trim();
+    se("f-desc","e-desc",!state.desc);
+    if(!state.desc)return false;
+    if(!state.artFileData){alert("Please upload your artwork so it can be saved with your order.");return false;}
+    if(state.dlv==="ship"){
+      state.addr=document.getElementById("i-addr").value.trim();
+      state.city=document.getElementById("i-city").value.trim();
+      state.zip=document.getElementById("i-zip").value.trim();
+      const zOk=state.zip.replace(/\D/g,"").length>=5;
+      se("f-addr","e-addr",!state.addr);se("f-city","e-city",!state.city);se("f-zip","e-zip",!zOk);
+      return !(!state.addr||!state.city||!zOk);
+    }
+    return true;
+  }
+};
+
+function se(fId,eId,hasErr){
+  const f=document.getElementById(fId),e=document.getElementById(eId);
+  if(f)f.classList.toggle("has-err",hasErr);
+  if(e)e.classList.toggle("show",hasErr);
+}
+
+function goNext(from){if(V[from]&&!V[from]())return;const n=from+1;showStep(n);if(n===4)buildReview();}
+function goBack(from){showStep(from-1);}
+
+function showStep(n){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById(`s${n}`).classList.add("active");
+  step=n;
+  document.getElementById("prog").style.width=`${(n/4)*100}%`;
+  for(let i=1;i<=4;i++){const l=document.getElementById(`l${i}`);if(l)l.classList.toggle("active",i===n);}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+function applySettings(cfg={}){
+  if(cfg.tier6)TIERS[0].price=Number(cfg.tier6);
+  if(cfg.tier10)TIERS[1].price=Number(cfg.tier10);
+  if(cfg.tier25)TIERS[2].price=Number(cfg.tier25);
+  if(cfg.tier50)TIERS[3].price=Number(cfg.tier50);
+  if(cfg.tier100)TIERS[4].price=Number(cfg.tier100);
+  if(cfg.up2xl)UPCHARGE["2XL"]=Number(cfg.up2xl);
+  if(cfg.up3xl)UPCHARGE["3XL"]=Number(cfg.up3xl);
+  if(cfg.freeMin)FREE_MIN=Number(cfg.freeMin);
+  if(cfg.phone)CONTACT_PHONE=cfg.phone;
+  if(cfg.email)ORDER_EMAIL=cfg.email;
+  const ship=document.getElementById("ship-sub");if(ship)ship.textContent=`Free over $${FREE_MIN}`;
+  updatePrice();updateTiers();
+}
+function loadRemoteSettings(){
+  if(!SCRIPT_URL.startsWith("https://script.google.com/"))return;
+  window.sgSettingsCallback=(r)=>{if(r&&r.ok&&r.settings)applySettings(r.settings);};
+  const sc=document.createElement("script");sc.src=`${SCRIPT_URL}?action=settings&callback=sgSettingsCallback&_=${Date.now()}`;sc.onerror=()=>{};document.body.appendChild(sc);
+}
+function openAdminLogin(){document.getElementById("admin-modal").classList.add("show");document.getElementById("admin-login-view").style.display="block";document.getElementById("admin-settings-view").style.display="none";document.getElementById("admin-code").value="";document.getElementById("admin-login-status").textContent="";}
+function closeAdmin(){document.getElementById("admin-modal").classList.remove("show");}
+function adminLogin(){
+  const code=document.getElementById("admin-code").value.trim(),status=document.getElementById("admin-login-status");
+  if(!SCRIPT_URL.startsWith("https://script.google.com/")){status.textContent="Connect the deployed Apps Script URL in index.html first.";return;}
+  status.textContent="Checking…";
+  window.sgAdminAuthCallback=(r)=>{if(r&&r.ok){status.textContent="";document.getElementById("admin-login-view").style.display="none";document.getElementById("admin-settings-view").style.display="block";fillAdmin();}else{status.textContent="Incorrect admin code.";}};
+  const sc=document.createElement("script");sc.src=`${SCRIPT_URL}?action=auth&code=${encodeURIComponent(code)}&callback=sgAdminAuthCallback&_=${Date.now()}`;document.body.appendChild(sc);
+}
+function fillAdmin(){
+  document.getElementById("a-tier-6").value=TIERS[0].price;document.getElementById("a-tier-10").value=TIERS[1].price;document.getElementById("a-tier-25").value=TIERS[2].price;document.getElementById("a-tier-50").value=TIERS[3].price;document.getElementById("a-tier-100").value=TIERS[4].price;document.getElementById("a-free-min").value=FREE_MIN;document.getElementById("a-2xl").value=UPCHARGE["2XL"];document.getElementById("a-3xl").value=UPCHARGE["3XL"];document.getElementById("a-phone").value=CONTACT_PHONE;document.getElementById("a-email").value=ORDER_EMAIL;
+}
+async function saveAdminSettings(){
+  const status=document.getElementById("admin-save-status"),code=document.getElementById("admin-code").value.trim();
+  const settings={tier6:Number(document.getElementById("a-tier-6").value),tier10:Number(document.getElementById("a-tier-10").value),tier25:Number(document.getElementById("a-tier-25").value),tier50:Number(document.getElementById("a-tier-50").value),tier100:Number(document.getElementById("a-tier-100").value),freeMin:Number(document.getElementById("a-free-min").value),up2xl:Number(document.getElementById("a-2xl").value),up3xl:Number(document.getElementById("a-3xl").value),phone:document.getElementById("a-phone").value.trim(),email:document.getElementById("a-email").value.trim()};
+  status.textContent="Saving…";applySettings(settings);
+  try{await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveSettings",admin_code:code,settings})});status.textContent="Saved. Customers will receive these settings from Apps Script.";}catch(e){status.textContent="Could not save settings. Check the Apps Script deployment.";}
+}
+
+buildUI();
+loadRemoteSettings();
+</script>
+</body>
+</html>
