@@ -1,0 +1,24 @@
+{
+  "name": "Seymore Green Custom Tees",
+  "short_name": "SG Custom Tees",
+  "description": "Design, order, pay, and wear custom tees by Seymore Green.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#050805",
+  "theme_color": "#19e34a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
