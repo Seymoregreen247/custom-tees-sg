@@ -173,10 +173,10 @@ body{background:var(--dk);color:var(--wh);font-family:'DM Sans',sans-serif;min-h
         </select>
         <div class="err-msg" id="e-color">Select a shirt color</div>
       </div>
-      <div class="field" id="f-qty"><label>Sizes & Quantities <span>*</span></label><div id="size-rows"></div><div class="err-msg" id="e-qty">Minimum 6 shirts required</div></div>
+      <div class="field" id="f-loc"><label>Print Location <span>*</span></label><div class="ssub" style="margin:-4px 0 10px">Pick where it's printed before entering sizes, so your price is right the first time.</div><div class="chip-wrap" id="loc-chips"></div><div class="err-msg" id="e-loc">Select a print location</div></div>
+      <div class="field" id="f-qty" style="margin-top:20px"><label>Sizes & Quantities <span>*</span></label><div id="size-rows"></div><div class="err-msg" id="e-qty">Minimum 6 shirts required</div></div>
       <div class="price-card" id="price-card"><div id="price-body"><div class="min-warn">Add at least 6 shirts to unlock pricing</div></div></div>
       <div style="margin-top:16px"><div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">Pricing Tiers</div><div class="tier-wrap" id="tier-pills"></div></div>
-      <div class="field" id="f-loc" style="margin-top:20px"><label>Print Location(s) <span>*</span></label><div class="chip-wrap" id="loc-chips"></div><div class="err-msg" id="e-loc">Select at least one location</div></div>
       <div class="nav-row"><button class="btn-back" onclick="goBack(2)">← Back</button><button class="btn-next" onclick="goNext(2)">NEXT →</button></div>
     </div>
 
@@ -284,6 +284,8 @@ body{background:var(--dk);color:var(--wh);font-family:'DM Sans',sans-serif;min-h
         <div class="field"><label>Free Shipping At</label><input type="number" step="1" id="a-free-min"></div>
         <div class="field"><label>2XL Upcharge</label><input type="number" step="0.01" id="a-2xl"></div>
         <div class="field"><label>3XL Upcharge</label><input type="number" step="0.01" id="a-3xl"></div>
+        <div class="field"><label>Front and Back Upcharge</label><input type="number" step="0.01" id="a-loc-fb"></div>
+        <div class="field"><label>Left Chest and Back Upcharge</label><input type="number" step="0.01" id="a-loc-lcb"></div>
         <div class="field"><label>Phone</label><input type="text" id="a-phone"></div>
         <div class="field"><label>Order Email</label><input type="email" id="a-email"></div>
       </div>
@@ -303,16 +305,18 @@ let FREE_MIN = 250;
 let TIERS=[{min:6,max:9,price:25,label:"6–9"},{min:10,max:24,price:22,label:"10–24"},{min:25,max:49,price:20,label:"25–49"},{min:50,max:99,price:18,label:"50–99"},{min:100,max:Infinity,price:16,label:"100+"}];
 const SIZES=["XS","S","M","L","XL","2XL","3XL"];
 let UPCHARGE={"2XL":3,"3XL":4};
+let LOC_PRICE={"Front Only":0,"Left Chest Only":0,"Left Chest and Back":10,"Front and Back":10}; // $/shirt upcharge per print-location combo
 let CONTACT_PHONE="844-473-9667";
 let ORDER_EMAIL="orders@seymoregreen.com";
-const LOCS=["Front Center","Back Center","Left Chest","Right Chest","Full Front","Full Back","Sleeve (L)","Sleeve (R)"];
+const LOCS=["Front Only","Front and Back","Left Chest Only","Left Chest and Back"];
 
 const state={name:"",email:"",phone:"",color:"",qty:Object.fromEntries(SIZES.map(s=>[s,0])),locs:[],desc:"",notes:"",dlv:"pickup",addr:"",city:"",zip:"",artFileName:"",artFileType:"",artFileData:""};
 let step=1;
 
 const totalQty=()=>SIZES.reduce((s,z)=>s+(state.qty[z]||0),0);
 const getTier=q=>TIERS.find(t=>q>=t.min&&q<=t.max);
-const grandTotal=()=>{const t=getTier(totalQty());if(!t)return 0;return SIZES.reduce((s,z)=>{const n=state.qty[z]||0,u=UPCHARGE[z]||0;return s+n*(t.price+u);},0);};
+const locExtra=()=>{if(!state.locs.length)return 0;return LOC_PRICE[state.locs[0]]||0;};
+const grandTotal=()=>{const t=getTier(totalQty());if(!t)return 0;const le=locExtra();return SIZES.reduce((s,z)=>{const n=state.qty[z]||0,u=UPCHARGE[z]||0;return s+n*(t.price+u+le);},0);};
 
 function buildUI(){
   const sr=document.getElementById("size-rows");
@@ -320,7 +324,7 @@ function buildUI(){
   const tp=document.getElementById("tier-pills");
   TIERS.forEach(t=>{const e=document.createElement("div");e.className="tier-pill";e.id=`tp-${t.min}`;e.textContent=`${t.label} = $${t.price}/shirt`;tp.appendChild(e);});
   const lc=document.getElementById("loc-chips");
-  LOCS.forEach(loc=>{const e=document.createElement("div");e.className="chip";e.textContent=loc;e.onclick=()=>{const i=state.locs.indexOf(loc);if(i===-1){state.locs.push(loc);e.classList.add("sel");}else{state.locs.splice(i,1);e.classList.remove("sel");}};lc.appendChild(e);});
+  LOCS.forEach(loc=>{const e=document.createElement("div");e.className="chip";e.textContent=loc;e.onclick=()=>{const already=state.locs[0]===loc;lc.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));if(already){state.locs=[];}else{state.locs=[loc];e.classList.add("sel");}updatePrice();};lc.appendChild(e);});
 }
 
 function chgQty(sz,d){
@@ -333,9 +337,10 @@ function chgQty(sz,d){
 function updatePrice(){
   const qty=totalQty(),tier=getTier(qty),card=document.getElementById("price-card"),body=document.getElementById("price-body");
   if(!tier){card.classList.remove("ready");body.innerHTML=`<div class="min-warn">Add ${6-qty} more shirt${qty===5?"":"s"} to unlock pricing</div>`;return;}
-  card.classList.add("ready");const total=grandTotal();
+  card.classList.add("ready");const total=grandTotal(),le=locExtra();
   const fs=total>=FREE_MIN?`<span style="color:var(--g);font-weight:700"> · ✅ Free shipping!</span>`:`<span> · Free ship over $${FREE_MIN}</span>`;
-  body.innerHTML=`<div class="price-row"><span class="lbl">Total Shirts</span><span class="val">${qty}</span></div><div class="price-row"><span class="lbl">Price / Shirt</span><span class="val">$${tier.price}</span></div><div class="pdiv"></div><div class="total-row"><span class="total-lbl">EST. TOTAL</span><span class="total-amt">$${total.toFixed(2)}</span></div><div style="font-size:11px;color:var(--gr);margin-top:8px">2XL +$3 · 3XL +$4 · Blank + DTF print included${fs}</div>`;
+  const locRow=le>0?`<div class="price-row"><span class="lbl">${state.locs[0]} Upcharge</span><span class="val">+$${le.toFixed(2)}/shirt</span></div>`:'';
+  body.innerHTML=`<div class="price-row"><span class="lbl">Total Shirts</span><span class="val">${qty}</span></div><div class="price-row"><span class="lbl">Price / Shirt</span><span class="val">$${tier.price}</span></div>${locRow}<div class="pdiv"></div><div class="total-row"><span class="total-lbl">EST. TOTAL</span><span class="total-amt">$${total.toFixed(2)}</span></div><div style="font-size:11px;color:var(--gr);margin-top:8px">2XL +$3 · 3XL +$4 · Back print adds $${LOC_PRICE["Front and Back"]}/shirt · Blank + DTF print included${fs}</div>`;
 }
 
 function updateTiers(){
@@ -377,7 +382,7 @@ function buildReview(){
   const rows=[["Customer",`${state.name} · ${state.email} · ${state.phone}`],["Shirt Color",state.color],["Sizes",szList],["Print Locations",state.locs.join(", ")],["Design",state.desc],...(state.artFileName?[["Artwork File",state.artFileName]]:[]),...(state.notes?[["Notes",state.notes]]:[]),["Delivery",dlvVal]];
   document.getElementById("review-rows").innerHTML=rows.map(([k,v])=>`<div class="review-row"><div class="rl">${k}</div><div class="rv" style="color:${k==="Delivery"&&free?"var(--g)":"var(--wh)"}">${v}</div></div>`).join("");
   document.getElementById("r-qty").textContent=qty;
-  document.getElementById("r-pps").textContent=tier?`$${tier.price}`:"—";
+  document.getElementById("r-pps").textContent=tier?(locExtra()>0?`$${(tier.price+locExtra()).toFixed(2)} (incl. location upcharge)`:`$${tier.price}`):"—";
   document.getElementById("r-total").textContent=`$${total.toFixed(2)}`;
   document.getElementById("r-freeship").style.display=(isShip&&free)?"flex":"none";
   renderPayPal(total);
@@ -397,7 +402,7 @@ function renderPayPal(amount){
 async function fireSheet(ppOrder){
   const qty=totalQty(),tier=getTier(qty),total=grandTotal();
   const isShip=state.dlv==="ship",free=isShip&&total>=FREE_MIN;
-  const payload={action:"order",order_date:new Date().toLocaleString(),name:state.name,email:state.email,phone:state.phone,shirt_color:state.color,sizes:SIZES.map(s=>`${s}:${state.qty[s]||0}`).join(", "),total_qty:qty,print_locations:state.locs.join(", "),design_desc:state.desc,art_file_name:state.artFileName||"N/A",art_file_type:state.artFileType||"application/octet-stream",art_file_data:state.artFileData||"",special_notes:state.notes,delivery:isShip?`Ship — ${state.addr}, ${state.city} MA ${state.zip}`:"Pickup — 35 Poplar St, Roslindale MA 02131",ship_address:isShip?`${state.addr}, ${state.city} MA ${state.zip}`:"N/A",free_shipping:free?"YES":isShip?"NO":"N/A",price_per_shirt:tier?tier.price:0,grand_total:total,paypal_id:ppOrder?.id||"N/A",status:"Paid"};
+  const payload={action:"order",order_date:new Date().toLocaleString(),name:state.name,email:state.email,phone:state.phone,shirt_color:state.color,sizes:SIZES.map(s=>`${s}:${state.qty[s]||0}`).join(", "),total_qty:qty,print_locations:state.locs.join(", "),design_desc:state.desc,art_file_name:state.artFileName||"N/A",art_file_type:state.artFileType||"application/octet-stream",art_file_data:state.artFileData||"",special_notes:state.notes,delivery:isShip?`Ship — ${state.addr}, ${state.city} MA ${state.zip}`:"Pickup — 35 Poplar St, Roslindale MA 02131",ship_address:isShip?`${state.addr}, ${state.city} MA ${state.zip}`:"N/A",free_shipping:free?"YES":isShip?"NO":"N/A",price_per_shirt:tier?tier.price:0,location_upcharge_per_shirt:locExtra(),grand_total:total,paypal_id:ppOrder?.id||"N/A",status:"Paid"};
   try{
     await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
     return true;
@@ -474,6 +479,8 @@ function applySettings(cfg={}){
   if(cfg.tier100)TIERS[4].price=Number(cfg.tier100);
   if(cfg.up2xl)UPCHARGE["2XL"]=Number(cfg.up2xl);
   if(cfg.up3xl)UPCHARGE["3XL"]=Number(cfg.up3xl);
+  if(cfg.upLocFB!==undefined&&cfg.upLocFB!==null&&cfg.upLocFB!=="")LOC_PRICE["Front and Back"]=Number(cfg.upLocFB);
+  if(cfg.upLocLCB!==undefined&&cfg.upLocLCB!==null&&cfg.upLocLCB!=="")LOC_PRICE["Left Chest and Back"]=Number(cfg.upLocLCB);
   if(cfg.freeMin)FREE_MIN=Number(cfg.freeMin);
   if(cfg.phone)CONTACT_PHONE=cfg.phone;
   if(cfg.email)ORDER_EMAIL=cfg.email;
@@ -495,11 +502,11 @@ function adminLogin(){
   const sc=document.createElement("script");sc.src=`${SCRIPT_URL}?action=auth&code=${encodeURIComponent(code)}&callback=sgAdminAuthCallback&_=${Date.now()}`;document.body.appendChild(sc);
 }
 function fillAdmin(){
-  document.getElementById("a-tier-6").value=TIERS[0].price;document.getElementById("a-tier-10").value=TIERS[1].price;document.getElementById("a-tier-25").value=TIERS[2].price;document.getElementById("a-tier-50").value=TIERS[3].price;document.getElementById("a-tier-100").value=TIERS[4].price;document.getElementById("a-free-min").value=FREE_MIN;document.getElementById("a-2xl").value=UPCHARGE["2XL"];document.getElementById("a-3xl").value=UPCHARGE["3XL"];document.getElementById("a-phone").value=CONTACT_PHONE;document.getElementById("a-email").value=ORDER_EMAIL;
+  document.getElementById("a-tier-6").value=TIERS[0].price;document.getElementById("a-tier-10").value=TIERS[1].price;document.getElementById("a-tier-25").value=TIERS[2].price;document.getElementById("a-tier-50").value=TIERS[3].price;document.getElementById("a-tier-100").value=TIERS[4].price;document.getElementById("a-free-min").value=FREE_MIN;document.getElementById("a-2xl").value=UPCHARGE["2XL"];document.getElementById("a-3xl").value=UPCHARGE["3XL"];document.getElementById("a-loc-fb").value=LOC_PRICE["Front and Back"];document.getElementById("a-loc-lcb").value=LOC_PRICE["Left Chest and Back"];document.getElementById("a-phone").value=CONTACT_PHONE;document.getElementById("a-email").value=ORDER_EMAIL;
 }
 async function saveAdminSettings(){
   const status=document.getElementById("admin-save-status"),code=document.getElementById("admin-code").value.trim();
-  const settings={tier6:Number(document.getElementById("a-tier-6").value),tier10:Number(document.getElementById("a-tier-10").value),tier25:Number(document.getElementById("a-tier-25").value),tier50:Number(document.getElementById("a-tier-50").value),tier100:Number(document.getElementById("a-tier-100").value),freeMin:Number(document.getElementById("a-free-min").value),up2xl:Number(document.getElementById("a-2xl").value),up3xl:Number(document.getElementById("a-3xl").value),phone:document.getElementById("a-phone").value.trim(),email:document.getElementById("a-email").value.trim()};
+  const settings={tier6:Number(document.getElementById("a-tier-6").value),tier10:Number(document.getElementById("a-tier-10").value),tier25:Number(document.getElementById("a-tier-25").value),tier50:Number(document.getElementById("a-tier-50").value),tier100:Number(document.getElementById("a-tier-100").value),freeMin:Number(document.getElementById("a-free-min").value),up2xl:Number(document.getElementById("a-2xl").value),up3xl:Number(document.getElementById("a-3xl").value),upLocFB:Number(document.getElementById("a-loc-fb").value),upLocLCB:Number(document.getElementById("a-loc-lcb").value),phone:document.getElementById("a-phone").value.trim(),email:document.getElementById("a-email").value.trim()};
   status.textContent="Saving…";applySettings(settings);
   try{await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveSettings",admin_code:code,settings})});status.textContent="Saved. Customers will receive these settings from Apps Script.";}catch(e){status.textContent="Could not save settings. Check the Apps Script deployment.";}
 }
