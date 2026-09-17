@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Seymore Green app identity -->
+  <meta name="theme-color" content="#19e34a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SG Custom Tees">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <!-- Browser favicon: embedded fallback + standard files -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="icon" href="data:image/png;base64,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">
+
+  <!-- iPhone / iPad home-screen icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+  <!-- Android / PWA install metadata -->
+  <link rel="manifest" href="manifest.webmanifest">
+
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Seymore Green — Custom T-Shirt Order</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://www.paypal.com/sdk/js?client-id=AesZd3aTLxNIsaTDKt81DDpKOwh_itX9QoEF8kjTIsXOOZrnYvSdZWtnGopQ7MjuSJPC1r2hgs9zBOO8&currency=USD&intent=capture"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#4BBB2A;--dk:#1e1e1e;--card:#272727;--inp:#2f2f2f;--bdr:#3a3a3a;--gr:#888;--wh:#fff;--rd:#ff5555}
+html{scroll-behavior:smooth}
+body{background:var(--dk);color:var(--wh);font-family:'DM Sans',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
+.header{background:#111;border-bottom:2px solid #222;padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{width:40px;height:40px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--dk);flex-shrink:0}
+.ht h1{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;line-height:1}
+.ht p{font-size:10px;color:var(--gr);letter-spacing:1.5px;text-transform:uppercase}
+.prog-wrap{max-width:520px;margin:0 auto;padding:20px 20px 0}
+.prog-track{height:3px;background:#333;border-radius:2px;margin-bottom:6px}
+.prog-fill{height:100%;background:var(--g);border-radius:2px;transition:width .4s ease}
+.step-labels{display:flex;justify-content:center}
+.slbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--gr);transition:color .3s}
+.slbl.active{color:var(--g);font-weight:700}
+.container{max-width:520px;margin:0 auto;padding:24px 20px 80px}
+.panel{display:none}
+.panel.active{display:block}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--g);letter-spacing:2px;line-height:1;margin-bottom:4px}
+.ssub{color:var(--gr);font-size:13px;margin-bottom:24px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field label{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.field label span{color:var(--g)}
+.field input,.field select,.field textarea{background:var(--inp);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;color:var(--wh);font-size:15px;font-family:'DM Sans',sans-serif;outline:none;width:100%;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--g)}
+.field textarea{resize:vertical;min-height:90px}
+.err-msg{font-size:11px;color:var(--rd);margin-top:4px;display:none}
+.err-msg.show{display:block}
+.field.has-err input,.field.has-err select,.field.has-err textarea{border-color:var(--rd)}
+.size-row{display:flex;align-items:center;background:var(--card);border-radius:10px;padding:11px 14px;margin-bottom:8px}
+.sz-lbl{font-weight:700;font-size:14px;width:40px}
+.upch{font-size:10px;color:var(--g);margin-left:4px}
+.qty-btn{width:32px;height:32px;border-radius:8px;border:none;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;font-weight:700;transition:transform .1s}
+.qty-btn:active{transform:scale(.9)}
+.qty-btn.minus{background:#333;color:var(--wh)}
+.qty-btn.plus{background:var(--g);color:var(--dk)}
+.qty-val{width:36px;text-align:center;font-weight:800;font-size:16px}
+.tier-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tier-pill{padding:5px 11px;border-radius:20px;font-size:11px;font-weight:700;background:var(--card);color:var(--gr);border:1px solid var(--bdr);transition:all .2s}
+.tier-pill.active{background:var(--g);color:var(--dk);border-color:var(--g)}
+.price-card{background:#111;border-radius:14px;padding:18px;border:1px solid var(--bdr);margin-top:16px;transition:border-color .3s}
+.price-card.ready{border-color:var(--g)}
+.price-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px}
+.price-row .lbl{color:var(--gr)}
+.price-row .val{font-weight:700}
+.pdiv{height:1px;background:#2a2a2a;margin:12px 0}
+.total-row{display:flex;justify-content:space-between;align-items:center}
+.total-lbl{font-weight:800;font-size:15px}
+.total-amt{font-family:'Bebas Neue',sans-serif;font-size:40px;color:var(--g);line-height:1}
+.min-warn{color:var(--rd);font-size:12px;font-weight:700;text-align:center;padding:8px}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 15px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--bdr);background:var(--card);color:var(--gr);transition:all .15s;-webkit-tap-highlight-color:transparent}
+.chip.sel{background:var(--g);color:var(--dk);border-color:var(--g)}
+.dlv-toggle{display:flex;gap:10px;margin-bottom:14px}
+.dlv-btn{flex:1;padding:14px 10px;border-radius:12px;border:2px solid var(--bdr);background:var(--card);color:var(--gr);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;line-height:1.4}
+.dlv-btn.active{border-color:var(--g);color:var(--wh);background:rgba(75,187,42,.1)}
+.dlv-btn .dico{font-size:22px;display:block;margin-bottom:4px}
+.pickup-info{background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:14px;border-left:3px solid var(--g)}
+.pickup-info .pi-lbl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.pickup-info .pi-addr{color:var(--wh);font-size:14px;font-weight:700;line-height:1.6}
+.pickup-info .pi-note{color:var(--gr);font-size:12px;margin-top:6px}
+.ship-fields{display:none}
+.ship-fields.show{display:block}
+.free-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(75,187,42,.15);border:1px solid var(--g);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--g);margin-bottom:14px}
+.ship-note{font-size:12px;color:var(--gr);margin-bottom:14px}
+.file-info{background:var(--card);border:1px dashed #444;border-radius:12px;padding:16px;margin-top:4px}
+.file-info .fi-lbl{color:var(--gr);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.file-info .fi-contact{color:var(--wh);font-size:13px;line-height:1.6}
+.file-info .fi-contact strong{color:var(--g)}
+.file-info .fi-fmt{color:var(--gr);font-size:11px;margin-top:8px}
+.file-upload{margin-top:12px}
+.file-upload input[type=file]{display:block;width:100%;background:var(--inp);border:1px solid var(--bdr);border-radius:10px;padding:12px;color:var(--wh);font-family:'DM Sans',sans-serif}
+.art-preview-wrap{display:none;margin-top:12px;background:#111;border:1px solid var(--bdr);border-radius:12px;padding:12px;text-align:center}
+.art-preview-wrap.show{display:block}
+.art-preview{display:block;max-width:100%;max-height:280px;margin:0 auto;border-radius:8px;object-fit:contain;background:#fff}
+.art-name{margin-top:8px;font-size:11px;color:var(--gr);word-break:break-word}
+.review-row{background:var(--card);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.review-row .rl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}
+.review-row .rv{color:var(--wh);font-size:14px;line-height:1.5}
+.paypal-section{margin-top:20px}
+.pp-lbl{font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px;display:block}
+#pp-btn-container{min-height:48px}
+.pp-note{font-size:11px;color:var(--gr);text-align:center;margin-top:10px;line-height:1.5}
+.nav-row{display:flex;gap:10px;margin-top:28px}
+.btn-back{flex:1;padding:15px;border-radius:12px;background:var(--card);border:1px solid var(--bdr);color:var(--wh);font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.btn-back:hover{background:#333}
+.btn-next{flex:2;padding:15px;border-radius:12px;background:var(--g);border:none;color:var(--dk);font-size:16px;font-weight:800;cursor:pointer;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:opacity .15s}
+.btn-next:active{opacity:.85}
+#success{display:none;min-height:100vh;background:var(--dk);align-items:center;justify-content:center;padding:40px 24px;text-align:center;flex-direction:column}
+.s-icon{font-size:72px;margin-bottom:16px}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--g);letter-spacing:3px;margin-bottom:12px}
+.s-sub{color:var(--gr);font-size:15px;line-height:1.6;max-width:340px;margin:0 auto 24px}
+.s-summary{background:var(--card);border-radius:14px;padding:20px;width:100%;max-width:360px;text-align:left;margin-bottom:12px}
+.s-row{display:flex;justify-content:space-between;margin-bottom:6px;font-size:14px}
+.s-total{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--g)}
+.footer{text-align:center;color:#444;font-size:11px;margin-top:20px}
+
+.admin-link{margin-left:auto;background:transparent;border:1px solid #333;color:#777;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;cursor:pointer}
+.admin-link:hover{border-color:var(--g);color:var(--g)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;padding:20px;align-items:center;justify-content:center;overflow:auto}
+.modal.show{display:flex}.modal-card{background:#1b1b1b;border:1px solid #3a3a3a;border-radius:16px;width:100%;max-width:520px;padding:22px;max-height:90vh;overflow:auto}
+.modal-title{font-family:'Bebas Neue',sans-serif;color:var(--g);font-size:32px;letter-spacing:2px;margin-bottom:5px}.modal-sub{font-size:12px;color:var(--gr);margin-bottom:18px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.admin-grid .field{margin-bottom:6px}.admin-actions{display:flex;gap:10px;margin-top:18px}.admin-actions button{flex:1;padding:13px;border-radius:10px;font-weight:800;cursor:pointer}
+.admin-save{background:var(--g);border:0;color:#111}.admin-cancel{background:#2c2c2c;border:1px solid #444;color:#fff}.admin-status{font-size:12px;margin-top:10px;color:var(--gr)}
+.art-required{font-size:11px;color:var(--gr);margin-top:8px}.uploading{font-size:12px;color:var(--g);font-weight:700;text-align:center;margin-top:10px}
+@media(max-width:520px){.admin-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <div class="logo">SG</div>
+    <div class="ht"><h1>SEYMORE GREEN</h1><p>Custom T-Shirt Order</p></div><button class="admin-link" onclick="openAdminLogin()">Admin</button>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:17%"></div></div>
+    <div class="step-labels"><span class="slbl active" id="step-label">Step 1 of 6 — Garment & Color</span></div>
+  </div>
+
+  <div class="container">
+
+    <!-- STEP 1: GARMENT + COLOR -->
+    <div class="panel active" id="s1">
+      <div class="stitle">GARMENT & COLOR</div>
+      <div class="ssub">Currently offering Gildan G500 T-Shirts. More garment types coming soon.</div>
+      <div class="field" id="f-garment"><label>Garment <span>*</span></label><div class="chip-wrap" id="garment-chips"></div><div class="err-msg" id="e-garment">Select a garment</div></div>
+      <div class="field" id="f-color" style="margin-top:20px"><label>Shirt Color <span>*</span></label>
+        <select id="i-color">
+          <option value="">-- Select Color --</option>
+          <option>White</option><option>Black</option><option>Ash Gray</option><option>Navy</option><option>Royal Blue</option><option>Red</option><option>Forest Green</option><option>Maroon</option><option>Purple</option><option>Gold</option><option>Orange</option><option>Sport Gray</option><option>Light Blue</option><option>Charcoal</option>
+        </select>
+        <div class="err-msg" id="e-color">Select a shirt color</div>
+      </div>
+      <div class="nav-row"><button class="btn-next" style="flex:3" onclick="goNext(1)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 2: YOUR INFO + DELIVERY -->
+    <div class="panel" id="s2">
+      <div class="stitle">YOUR INFO</div>
+      <div class="ssub">We'll confirm your order within 24 hours.</div>
+      <div class="field" id="f-name"><label>Full Name <span>*</span></label><input type="text" id="i-name" placeholder="John Smith" autocomplete="name"/><div class="err-msg" id="e-name">Name is required</div></div>
+      <div class="field" id="f-email"><label>Email <span>*</span></label><input type="email" id="i-email" placeholder="you@email.com" autocomplete="email"/><div class="err-msg" id="e-email">Valid email required</div></div>
+      <div class="field" id="f-phone"><label>Phone <span>*</span></label><input type="tel" id="i-phone" placeholder="(617) 555-0100" autocomplete="tel"/><div class="err-msg" id="e-phone">Valid phone required</div></div>
+      <div style="margin-top:24px">
+        <div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:10px">Pickup or Shipping? <span style="color:var(--g)">*</span></div>
+        <div class="dlv-toggle">
+          <button class="dlv-btn active" id="b-pickup" onclick="setDlv('pickup')"><span class="dico">🏪</span>Free Pickup<br/><span style="font-size:11px;font-weight:400">Roslindale</span></button>
+          <button class="dlv-btn" id="b-ship" onclick="setDlv('ship')"><span class="dico">📦</span>Ship to Me<br/><span style="font-size:11px;font-weight:400" id="ship-sub">Free over $250</span></button>
+        </div>
+        <div class="pickup-info" id="pickup-info">
+          <div class="pi-lbl">📍 Pickup Location</div>
+          <div class="pi-addr">35 Poplar Street<br/>Roslindale, MA 02131</div>
+          <div class="pi-note">We'll text you when your order is ready. Always free — no fees.</div>
+        </div>
+        <div class="ship-fields" id="ship-fields">
+          <div id="ship-note-wrap"></div>
+          <div class="field" id="f-addr"><label>Street Address <span>*</span></label><input type="text" id="i-addr" placeholder="123 Main St, Apt 2" autocomplete="street-address"/><div class="err-msg" id="e-addr">Address required</div></div>
+          <div style="display:flex;gap:10px">
+            <div class="field" id="f-city" style="flex:2"><label>City <span>*</span></label><input type="text" id="i-city" placeholder="Boston" autocomplete="address-level2"/><div class="err-msg" id="e-city">City required</div></div>
+            <div class="field" id="f-zip" style="flex:1"><label>ZIP <span>*</span></label><input type="text" id="i-zip" placeholder="02131" maxlength="5" inputmode="numeric"/><div class="err-msg" id="e-zip">Valid ZIP</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(2)">← Back</button><button class="btn-next" onclick="goNext(2)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 3: DESIGN + PRINT LOCATIONS -->
+    <div class="panel" id="s3">
+      <div class="stitle">DESIGN & PRINT</div>
+      <div class="ssub">Tell us what you want, where it goes, and upload your artwork.</div>
+      <div class="field" id="f-desc"><label>Design Description <span>*</span></label><textarea id="i-desc" placeholder="Ex: Logo on front left chest, team name on back. Red & white on black."></textarea><div class="err-msg" id="e-desc">Please describe your design</div></div>
+      <div class="file-info">
+        <div class="fi-lbl">📎 Upload Your Art File</div>
+        <div class="fi-contact">Choose your artwork below. Image files will show a preview so you can confirm you selected the right design.</div>
+        <div class="file-upload"><input type="file" id="i-art" accept="image/png,image/jpeg,image/webp,image/gif,.pdf,.ai,.svg" onchange="previewArt(this)"/></div>
+        <div class="art-preview-wrap" id="art-preview-wrap">
+          <img id="art-preview" class="art-preview" alt="Uploaded artwork preview"/>
+          <div class="art-name" id="art-name"></div>
+        </div>
+        <div class="fi-fmt">Preview supported for PNG · JPG · WEBP · GIF · SVG. PDF/AI files will show the filename only.</div><div class="art-required">Your uploaded artwork is saved with the paid order so Seymore Green can open it directly from the order sheet.</div>
+        <div class="fi-contact" style="margin-top:10px">Need to send a production file separately? Email: <strong>orders@seymoregreen.com</strong></div>
+      </div>
+      <div class="field" id="f-loc" style="margin-top:20px"><label>Print Location <span>*</span></label><div class="chip-wrap" id="loc-chips"></div><div class="err-msg" id="e-loc">Select a print location</div></div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(3)">← Back</button><button class="btn-next" onclick="goNext(3)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 4: SIZES & QUANTITIES -->
+    <div class="panel" id="s4">
+      <div class="stitle">SIZES & QUANTITIES</div>
+      <div class="ssub">6-shirt minimum. Add your sizes below — we'll calculate your price next.</div>
+      <div class="field" id="f-qty"><div id="size-rows"></div><div class="err-msg" id="e-qty">Minimum 6 shirts required</div></div>
+      <div class="ssub" id="qty-counter" style="margin-top:4px;font-weight:700;color:var(--wh)">Total Shirts: 0</div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(4)">← Back</button><button class="btn-next" onclick="goNext(4)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 5: PRICE -->
+    <div class="panel" id="s5">
+      <div class="stitle">YOUR PRICE</div>
+      <div class="ssub">Pick when you need it — we'll calculate your total, including any rush fee.</div>
+      <div class="field" id="f-needed"><label>Needed By <span>*</span></label><input type="date" id="i-needed" oninput="onNeededChange()"/><div class="ssub" style="margin:6px 0 0">Standard turnaround is 14 days with no rush fee.</div><div class="err-msg" id="e-needed">Please pick a date at least 3 days out</div></div>
+      <div class="price-card" id="price-card"><div id="price-body"><div class="min-warn">Add at least 6 shirts to unlock pricing</div></div></div>
+      <div style="margin-top:16px"><div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">Pricing Tiers</div><div class="tier-wrap" id="tier-pills"></div></div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(5)">← Back</button><button class="btn-next" onclick="goNext(5)">NEXT →</button></div>
+    </div>
+
+    <!-- STEP 6: PAYMENT -->
+    <div class="panel" id="s6">
+      <div class="stitle">REVIEW & PAY</div>
+      <div class="ssub">Confirm everything. Pay to lock in your slot.</div>
+      <div id="review-rows"></div>
+      <div class="price-card ready" style="margin-top:8px">
+        <div class="price-row"><span class="lbl">Total Shirts</span><span class="val" id="r-qty">—</span></div>
+        <div class="price-row"><span class="lbl">Price / Shirt</span><span class="val" id="r-pps">—</span></div>
+        <div class="price-row" id="r-rush-row" style="display:none"><span class="lbl" id="r-rush-lbl">Rush Fee</span><span class="val" id="r-rush">—</span></div>
+        <div class="pdiv"></div>
+        <div class="total-row"><span class="total-lbl">TOTAL DUE</span><span class="total-amt" id="r-total">$0</span></div>
+        <div id="r-freeship" style="display:none;margin-top:10px" class="free-badge">🚚 FREE SHIPPING INCLUDED</div>
+        <div style="font-size:11px;color:var(--gr);margin-top:10px">Full payment secures your order. Production begins after payment clears.</div>
+      </div>
+      <div class="paypal-section">
+        <span class="pp-lbl">💳 Secure Payment via PayPal</span>
+        <div id="pp-btn-container"></div>
+        <p class="pp-note">Pay with PayPal, credit or debit card — secured by PayPal</p>
+      </div>
+      <div class="nav-row"><button class="btn-back" onclick="goBack(6)">← Back</button></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="success">
+  <div class="s-icon">✅</div>
+  <div class="s-title">ORDER LOCKED IN</div>
+  <p class="s-sub">Payment received. We'll reach out to confirm your design and production timeline.</p>
+  <div class="s-summary">
+    <div style="font-size:10px;color:var(--gr);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Order Summary</div>
+    <div class="s-row"><span style="color:var(--gr)">Customer</span><span id="ss-name" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Shirts</span><span id="ss-qty" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Color</span><span id="ss-color" style="font-weight:700">—</span></div>
+    <div class="s-row"><span style="color:var(--gr)">Delivery</span><span id="ss-dlv" style="font-weight:700">—</span></div>
+    <div class="s-row" style="margin-top:10px;border-top:1px solid #333;padding-top:10px"><span style="font-weight:800">PAID</span><span class="s-total" id="ss-total">$0</span></div>
+  </div>
+  <p style="color:var(--gr);font-size:13px">Questions? Text <strong style="color:var(--g)">844-473-9667</strong></p>
+  <p class="footer">Click & Print 24-7 · 35 Poplar St, Roslindale MA 02131 · seymoregreen.com</p>
+</div>
+
+
+<!-- ADMIN -->
+<div class="modal" id="admin-modal">
+  <div class="modal-card">
+    <div id="admin-login-view">
+      <div class="modal-title">ADMIN</div>
+      <div class="modal-sub">Enter your admin code to manage pricing and store settings.</div>
+      <div class="field"><label>Admin Code</label><input type="password" id="admin-code" placeholder="Admin code"/></div>
+      <div class="admin-actions"><button class="admin-cancel" onclick="closeAdmin()">Cancel</button><button class="admin-save" onclick="adminLogin()">Unlock</button></div>
+      <div class="admin-status" id="admin-login-status"></div>
+    </div>
+    <div id="admin-settings-view" style="display:none">
+      <div class="modal-title">CUSTOM TEES ADMIN</div>
+      <div class="modal-sub">Changes save to your Apps Script settings and load for customers on the live app.</div>
+      <div class="admin-grid">
+        <div class="field"><label>6–9 Price</label><input type="number" step="0.01" id="a-tier-6"></div>
+        <div class="field"><label>10–24 Price</label><input type="number" step="0.01" id="a-tier-10"></div>
+        <div class="field"><label>25–49 Price</label><input type="number" step="0.01" id="a-tier-25"></div>
+        <div class="field"><label>50–99 Price</label><input type="number" step="0.01" id="a-tier-50"></div>
+        <div class="field"><label>100+ Price</label><input type="number" step="0.01" id="a-tier-100"></div>
+        <div class="field"><label>Free Shipping At</label><input type="number" step="1" id="a-free-min"></div>
+        <div class="field"><label>2XL Upcharge</label><input type="number" step="0.01" id="a-2xl"></div>
+        <div class="field"><label>3XL Upcharge</label><input type="number" step="0.01" id="a-3xl"></div>
+        <div class="field"><label>Front and Back Upcharge</label><input type="number" step="0.01" id="a-loc-fb"></div>
+        <div class="field"><label>Left Chest and Back Upcharge</label><input type="number" step="0.01" id="a-loc-lcb"></div>
+        <div class="field"><label>Phone</label><input type="text" id="a-phone"></div>
+        <div class="field"><label>Order Email</label><input type="email" id="a-email"></div>
+      </div>
+      <div class="admin-actions"><button class="admin-cancel" onclick="closeAdmin()">Close</button><button class="admin-save" onclick="saveAdminSettings()">Save Changes</button></div>
+      <div class="admin-status" id="admin-save-status"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ ONLY ONE THING LEFT TO SWAP ══════════════════════════════
+// Paste your Google Apps Script URL below after you deploy it
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBcJJe3Tq3TTU0qmCqOyQLOwyQFUx4abQ87CVDW_RwmFD7Zpk_4VVv6IPfNLMedFi7/exec";
+let FREE_MIN = 250;
+// ═════════════════════════════════════════════════════════════
+
+let TIERS=[{min:6,max:9,price:25,label:"6–9"},{min:10,max:24,price:22,label:"10–24"},{min:25,max:49,price:20,label:"25–49"},{min:50,max:99,price:18,label:"50–99"},{min:100,max:Infinity,price:16,label:"100+"}];
+const SIZES=["XS","S","M","L","XL","2XL","3XL"];
+let UPCHARGE={"2XL":3,"3XL":4};
+let LOC_PRICE={"Front Only":0,"Left Chest Only":0,"Left Chest and Back":10,"Front and Back":10}; // $/shirt upcharge per print-location combo
+let CONTACT_PHONE="844-473-9667";
+let ORDER_EMAIL="orders@seymoregreen.com";
+const LOCS=["Front Only","Front and Back","Left Chest Only","Left Chest and Back"];
+// Garment options — only one active today (Gildan G500 Tee). Add more here once pricing is confirmed for them.
+const GARMENTS=[{key:"tee",label:"T-Shirt — Gildan G500"}];
+const TOTAL_STEPS=6;
+const STEP_LABELS=["Garment & Color","Your Info","Design & Print","Sizes & Qty","Price","Payment"];
+// Rush pricing tiers, based on days between today and the picked "Needed By" date.
+// Matches industry-standard rush pricing (e.g. CustomInk: 14-day standard, 1-week rush +15%, 3-day super rush +30%).
+// Adjust minDays/maxDays/pct here to change the thresholds or fees.
+const RUSH_TIERS=[{key:"super",label:"Super Rush",minDays:3,maxDays:6,pct:0.30},{key:"rush",label:"Rush",minDays:7,maxDays:13,pct:0.15},{key:"standard",label:"Standard",minDays:14,maxDays:Infinity,pct:0}];
+const MIN_LEAD_DAYS=3,MAX_LEAD_DAYS=60;
+const toISODate=d=>{const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`;};
+const daysOutFor=dateStr=>{if(!dateStr)return null;const today=new Date();today.setHours(0,0,0,0);const d=new Date(dateStr+"T00:00:00");return Math.round((d-today)/86400000);};
+const getRushTier=dateStr=>{const n=daysOutFor(dateStr);if(n===null)return null;return RUSH_TIERS.find(t=>n>=t.minDays&&n<=t.maxDays)||RUSH_TIERS[RUSH_TIERS.length-1];};
+const rushMultiplier=()=>{const t=getRushTier(state.needed);return t?1+t.pct:1;};
+const formatNeeded=()=>state.needed?new Date(state.needed+"T00:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",year:"numeric"}):"";
+
+const state={garment:GARMENTS[0].label,name:"",email:"",phone:"",color:"",qty:Object.fromEntries(SIZES.map(s=>[s,0])),locs:[],desc:"",needed:"",dlv:"pickup",addr:"",city:"",zip:"",artFileName:"",artFileType:"",artFileData:""};
+let step=1;
+
+const totalQty=()=>SIZES.reduce((s,z)=>s+(state.qty[z]||0),0);
+const getTier=q=>TIERS.find(t=>q>=t.min&&q<=t.max);
+const locExtra=()=>{if(!state.locs.length)return 0;return LOC_PRICE[state.locs[0]]||0;};
+const baseTotal=()=>{const t=getTier(totalQty());if(!t)return 0;const le=locExtra();return SIZES.reduce((s,z)=>{const n=state.qty[z]||0,u=UPCHARGE[z]||0;return s+n*(t.price+u+le);},0);};
+const grandTotal=()=>baseTotal()*rushMultiplier();
+
+function buildUI(){
+  const sr=document.getElementById("size-rows");
+  SIZES.forEach(sz=>{const r=document.createElement("div");r.className="size-row";r.innerHTML=`<span class="sz-lbl">${sz}</span>${UPCHARGE[sz]?`<span class="upch">+$${UPCHARGE[sz]}</span>`:''}<span style="flex:1"></span><button class="qty-btn minus" onclick="chgQty('${sz}',-1)">−</button><span class="qty-val" id="qv-${sz}">0</span><button class="qty-btn plus" onclick="chgQty('${sz}',1)">+</button>`;sr.appendChild(r);});
+  const tp=document.getElementById("tier-pills");
+  TIERS.forEach(t=>{const e=document.createElement("div");e.className="tier-pill";e.id=`tp-${t.min}`;e.textContent=`${t.label} = $${t.price}/shirt`;tp.appendChild(e);});
+  const gc=document.getElementById("garment-chips");
+  GARMENTS.forEach(g=>{const e=document.createElement("div");e.className="chip"+(state.garment===g.label?" sel":"");e.textContent=g.label;e.onclick=()=>{state.garment=g.label;gc.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));e.classList.add("sel");};gc.appendChild(e);});
+  const lc=document.getElementById("loc-chips");
+  LOCS.forEach(loc=>{const e=document.createElement("div");e.className="chip";e.textContent=loc;e.onclick=()=>{const already=state.locs[0]===loc;lc.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));if(already){state.locs=[];}else{state.locs=[loc];e.classList.add("sel");}};lc.appendChild(e);});
+  const inp=document.getElementById("i-needed"),today=new Date();
+  const minD=new Date(today);minD.setDate(minD.getDate()+MIN_LEAD_DAYS);
+  const maxD=new Date(today);maxD.setDate(maxD.getDate()+MAX_LEAD_DAYS);
+  inp.min=toISODate(minD);inp.max=toISODate(maxD);
+}
+
+function onNeededChange(){
+  state.needed=document.getElementById("i-needed").value;
+  se("f-needed","e-needed",false);
+  renderPriceStep();
+}
+
+function chgQty(sz,d){
+  state.qty[sz]=Math.max(0,(state.qty[sz]||0)+d);
+  document.getElementById(`qv-${sz}`).textContent=state.qty[sz];
+  const c=document.getElementById("qty-counter");
+  if(c)c.textContent=`Total Shirts: ${totalQty()}`;
+}
+
+function renderPriceStep(){
+  const qty=totalQty(),tier=getTier(qty),card=document.getElementById("price-card"),body=document.getElementById("price-body");
+  if(!tier){card.classList.remove("ready");body.innerHTML=`<div class="min-warn">Add ${Math.max(0,6-qty)} more shirt${qty===5?"":"s"} to unlock pricing</div>`;updateTiers();return;}
+  card.classList.add("ready");const total=grandTotal(),bt=baseTotal(),le=locExtra(),rTier=getRushTier(state.needed);
+  const fs=total>=FREE_MIN?`<span style="color:var(--g);font-weight:700"> · ✅ Free shipping!</span>`:`<span> · Free ship over $${FREE_MIN}</span>`;
+  const locRow=le>0?`<div class="price-row"><span class="lbl">${state.locs[0]} Upcharge</span><span class="val">+$${le.toFixed(2)}/shirt</span></div>`:'';
+  const rushRow=rTier&&rTier.pct>0?`<div class="price-row"><span class="lbl">${rTier.label} Fee (+${Math.round(rTier.pct*100)}%)</span><span class="val">+$${(total-bt).toFixed(2)}</span></div>`:'';
+  body.innerHTML=`<div class="price-row"><span class="lbl">Total Shirts</span><span class="val">${qty}</span></div><div class="price-row"><span class="lbl">Price / Shirt</span><span class="val">$${tier.price}</span></div>${locRow}${rushRow}<div class="pdiv"></div><div class="total-row"><span class="total-lbl">EST. TOTAL</span><span class="total-amt">$${total.toFixed(2)}</span></div><div style="font-size:11px;color:var(--gr);margin-top:8px">2XL +$3 · 3XL +$4 · Back print adds $${LOC_PRICE["Front and Back"]}/shirt · Blank + DTF print included${fs}</div>`;
+  updateTiers();
+}
+
+function updateTiers(){
+  const tier=getTier(totalQty());
+  TIERS.forEach(t=>{const e=document.getElementById(`tp-${t.min}`);if(e)e.className="tier-pill"+(tier&&tier.min===t.min?" active":"");});
+}
+
+function setDlv(m){
+  state.dlv=m;
+  document.getElementById("b-pickup").classList.toggle("active",m==="pickup");
+  document.getElementById("b-ship").classList.toggle("active",m==="ship");
+  document.getElementById("pickup-info").style.display=m==="pickup"?"block":"none";
+  document.getElementById("ship-fields").classList.toggle("show",m==="ship");
+  if(m==="ship")updateShipNote();
+}
+
+function updateShipNote(){
+  const total=grandTotal(),sub=document.getElementById("ship-sub"),wrap=document.getElementById("ship-note-wrap");
+  if(total>=FREE_MIN){sub.textContent="✅ Free shipping!";wrap.innerHTML='<div class="free-badge">🚚 FREE SHIPPING — your order qualifies!</div>';}
+  else{sub.textContent=`Free over $${FREE_MIN}`;wrap.innerHTML=`<div class="ship-note">Add $${(FREE_MIN-total).toFixed(2)} more for free shipping</div>`;}
+}
+
+function previewArt(input){
+  const file=input.files&&input.files[0];
+  const wrap=document.getElementById("art-preview-wrap"),img=document.getElementById("art-preview"),name=document.getElementById("art-name");
+  if(!file){state.artFileName="";state.artFileType="";state.artFileData="";wrap.classList.remove("show");img.removeAttribute("src");name.textContent="";return;}
+  if(file.size>10*1024*1024){alert("Please use an artwork file 10 MB or smaller for this order form.");input.value="";return previewArt(input);}
+  state.artFileName=file.name;state.artFileType=file.type||"application/octet-stream";name.textContent=`Selected: ${file.name}`;wrap.classList.add("show");
+  const reader=new FileReader();
+  reader.onload=e=>{state.artFileData=e.target.result;if(file.type.startsWith("image/")){img.src=e.target.result;img.style.display="block";}else{img.removeAttribute("src");img.style.display="none";}};
+  reader.readAsDataURL(file);
+}
+
+function buildReview(){
+  const qty=totalQty(),tier=getTier(qty),total=grandTotal(),bt=baseTotal();
+  const isShip=state.dlv==="ship",free=isShip&&total>=FREE_MIN;
+  const szList=SIZES.filter(s=>state.qty[s]>0).map(s=>`${s} × ${state.qty[s]}`).join(", ");
+  const dlvVal=isShip?`Ship to: ${state.addr}, ${state.city} MA ${state.zip}${free?" — ✅ FREE":""}`:"🏪 Pickup — 35 Poplar St, Roslindale MA 02131";
+  const rTier=getRushTier(state.needed),rFee=rTier&&rTier.pct>0?` (+${Math.round(rTier.pct*100)}% ${rTier.label} fee)`:"";
+  const rows=[
+    ["Garment",state.garment],
+    ["Shirt Color",state.color],
+    ["Design",state.desc],
+    ...(state.artFileName?[["Artwork File",state.artFileName]]:[]),
+    ["Print Locations",state.locs.join(", ")],
+    ["Sizes",szList],
+    ["Needed By",`${formatNeeded()}${rFee}`],
+    ["Customer",`${state.name} · ${state.email} · ${state.phone}`],
+    ["Delivery",dlvVal]
+  ];
+  document.getElementById("review-rows").innerHTML=rows.map(([k,v])=>`<div class="review-row"><div class="rl">${k}</div><div class="rv" style="color:${k==="Delivery"&&free?"var(--g)":"var(--wh)"}">${v}</div></div>`).join("");
+  document.getElementById("r-qty").textContent=qty;
+  document.getElementById("r-pps").textContent=tier?(locExtra()>0?`$${(tier.price+locExtra()).toFixed(2)} (incl. location upcharge)`:`$${tier.price}`):"—";
+  const rushRow=document.getElementById("r-rush-row");
+  if(rTier&&rTier.pct>0){rushRow.style.display="flex";document.getElementById("r-rush-lbl").textContent=`${rTier.label} Fee (+${Math.round(rTier.pct*100)}%)`;document.getElementById("r-rush").textContent=`+$${(total-bt).toFixed(2)}`;}else{rushRow.style.display="none";}
+  document.getElementById("r-total").textContent=`$${total.toFixed(2)}`;
+  document.getElementById("r-freeship").style.display=(isShip&&free)?"flex":"none";
+  renderPayPal(total);
+}
+
+function renderPayPal(amount){
+  const c=document.getElementById("pp-btn-container");c.innerHTML="";
+  if(!window.paypal){c.innerHTML='<div style="color:var(--rd);font-size:13px;padding:12px;background:var(--card);border-radius:10px">⚠️ PayPal failed to load. Check your internet connection.</div>';return;}
+  paypal.Buttons({
+    style:{shape:"rect",color:"gold",layout:"vertical",label:"pay"},
+    createOrder:(d,a)=>a.order.create({purchase_units:[{description:`Seymore Green Custom T-Shirts (${totalQty()} shirts)`,amount:{currency_code:"USD",value:amount.toFixed(2)}}]}),
+    onApprove:async(d,a)=>{const o=await a.order.capture();const c=document.getElementById("pp-btn-container");c.innerHTML='<div class="uploading">Saving your paid order and artwork…</div>';await fireSheet(o);showSuccess();},
+    onError:e=>{console.error(e);alert("Payment failed. Please try again or contact us directly.");}
+  }).render("#pp-btn-container");
+}
+
+async function fireSheet(ppOrder){
+  const qty=totalQty(),tier=getTier(qty),total=grandTotal(),rTier=getRushTier(state.needed);
+  const isShip=state.dlv==="ship",free=isShip&&total>=FREE_MIN;
+  const payload={action:"order",order_date:new Date().toLocaleString(),name:state.name,email:state.email,phone:state.phone,garment:state.garment,shirt_color:state.color,sizes:SIZES.map(s=>`${s}:${state.qty[s]||0}`).join(", "),total_qty:qty,print_locations:state.locs.join(", "),design_desc:state.desc,art_file_name:state.artFileName||"N/A",art_file_type:state.artFileType||"application/octet-stream",art_file_data:state.artFileData||"",turnaround:rTier?.label||"Standard",rush_fee_pct:rTier?.pct||0,needed_by:state.needed,special_notes:`${rTier?.label||"Standard"} — Needed by ${formatNeeded()}`,delivery:isShip?`Ship — ${state.addr}, ${state.city} MA ${state.zip}`:"Pickup — 35 Poplar St, Roslindale MA 02131",ship_address:isShip?`${state.addr}, ${state.city} MA ${state.zip}`:"N/A",free_shipping:free?"YES":isShip?"NO":"N/A",price_per_shirt:tier?tier.price:0,location_upcharge_per_shirt:locExtra(),grand_total:total,paypal_id:ppOrder?.id||"N/A",status:"Paid"};
+  try{
+    await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    return true;
+  }catch(e){console.error("Order save failed",e);return false;}
+}
+
+function showSuccess(){
+  document.getElementById("app").style.display="none";
+  const s=document.getElementById("success");s.style.display="flex";
+  document.getElementById("ss-name").textContent=state.name;
+  document.getElementById("ss-qty").textContent=`${totalQty()} shirts`;
+  document.getElementById("ss-color").textContent=state.color;
+  document.getElementById("ss-dlv").textContent=state.dlv==="ship"?`Ship to ${state.addr}, ${state.city}`:"Pickup — 35 Poplar St";
+  document.getElementById("ss-total").textContent=`$${grandTotal().toFixed(2)}`;
+}
+
+const V={
+  1:()=>{ // Garment + Color
+    state.color=document.getElementById("i-color").value;
+    const gOk=!!state.garment,cOk=!!state.color;
+    se("f-garment","e-garment",!gOk);se("f-color","e-color",!cOk);
+    return gOk&&cOk;
+  },
+  2:()=>{ // Your Info + Delivery
+    state.name=document.getElementById("i-name").value.trim();
+    state.email=document.getElementById("i-email").value.trim();
+    state.phone=document.getElementById("i-phone").value.trim();
+    const ok=!(!state.name||!state.email.includes("@")||state.phone.replace(/\D/g,"").length<10);
+    se("f-name","e-name",!state.name);se("f-email","e-email",!state.email.includes("@"));se("f-phone","e-phone",state.phone.replace(/\D/g,"").length<10);
+    if(!ok)return false;
+    if(state.dlv==="ship"){
+      state.addr=document.getElementById("i-addr").value.trim();
+      state.city=document.getElementById("i-city").value.trim();
+      state.zip=document.getElementById("i-zip").value.trim();
+      const zOk=state.zip.replace(/\D/g,"").length>=5;
+      se("f-addr","e-addr",!state.addr);se("f-city","e-city",!state.city);se("f-zip","e-zip",!zOk);
+      return !(!state.addr||!state.city||!zOk);
+    }
+    return true;
+  },
+  3:()=>{ // Design + Print Locations
+    state.desc=document.getElementById("i-desc").value.trim();
+    se("f-desc","e-desc",!state.desc);
+    if(!state.desc)return false;
+    if(!state.artFileData){alert("Please upload your artwork so it can be saved with your order.");return false;}
+    const locOk=!!state.locs.length;
+    se("f-loc","e-loc",!locOk);
+    return locOk;
+  },
+  4:()=>{ // Sizes & Quantities
+    const ok=totalQty()>=6;
+    se("f-qty","e-qty",!ok);
+    return ok;
+  },
+  5:()=>{ // Price / Needed By date
+    state.needed=document.getElementById("i-needed").value;
+    const validDate=state.needed&&daysOutFor(state.needed)>=MIN_LEAD_DAYS;
+    se("f-needed","e-needed",!validDate);
+    return validDate;
+  }
+};
+
+function se(fId,eId,hasErr){
+  const f=document.getElementById(fId),e=document.getElementById(eId);
+  if(f)f.classList.toggle("has-err",hasErr);
+  if(e)e.classList.toggle("show",hasErr);
+}
+
+function goNext(from){if(V[from]&&!V[from]())return;showStep(from+1);}
+function goBack(from){showStep(from-1);}
+
+function showStep(n){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById(`s${n}`).classList.add("active");
+  step=n;
+  document.getElementById("prog").style.width=`${(n/TOTAL_STEPS)*100}%`;
+  const lbl=document.getElementById("step-label");
+  if(lbl)lbl.textContent=`Step ${n} of ${TOTAL_STEPS} — ${STEP_LABELS[n-1]}`;
+  if(n===4){const c=document.getElementById("qty-counter");if(c)c.textContent=`Total Shirts: ${totalQty()}`;}
+  if(n===5)renderPriceStep();
+  if(n===6)buildReview();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+
+function applySettings(cfg={}){
+  if(cfg.tier6)TIERS[0].price=Number(cfg.tier6);
+  if(cfg.tier10)TIERS[1].price=Number(cfg.tier10);
+  if(cfg.tier25)TIERS[2].price=Number(cfg.tier25);
+  if(cfg.tier50)TIERS[3].price=Number(cfg.tier50);
+  if(cfg.tier100)TIERS[4].price=Number(cfg.tier100);
+  if(cfg.up2xl)UPCHARGE["2XL"]=Number(cfg.up2xl);
+  if(cfg.up3xl)UPCHARGE["3XL"]=Number(cfg.up3xl);
+  if(cfg.upLocFB!==undefined&&cfg.upLocFB!==null&&cfg.upLocFB!=="")LOC_PRICE["Front and Back"]=Number(cfg.upLocFB);
+  if(cfg.upLocLCB!==undefined&&cfg.upLocLCB!==null&&cfg.upLocLCB!=="")LOC_PRICE["Left Chest and Back"]=Number(cfg.upLocLCB);
+  if(cfg.freeMin)FREE_MIN=Number(cfg.freeMin);
+  if(cfg.phone)CONTACT_PHONE=cfg.phone;
+  if(cfg.email)ORDER_EMAIL=cfg.email;
+  const ship=document.getElementById("ship-sub");if(ship)ship.textContent=`Free over $${FREE_MIN}`;
+  renderPriceStep();updateTiers();
+}
+function loadRemoteSettings(){
+  if(!SCRIPT_URL.startsWith("https://script.google.com/"))return;
+  window.sgSettingsCallback=(r)=>{if(r&&r.ok&&r.settings)applySettings(r.settings);};
+  const sc=document.createElement("script");sc.src=`${SCRIPT_URL}?action=settings&callback=sgSettingsCallback&_=${Date.now()}`;sc.onerror=()=>{};document.body.appendChild(sc);
+}
+function openAdminLogin(){document.getElementById("admin-modal").classList.add("show");document.getElementById("admin-login-view").style.display="block";document.getElementById("admin-settings-view").style.display="none";document.getElementById("admin-code").value="";document.getElementById("admin-login-status").textContent="";}
+function closeAdmin(){document.getElementById("admin-modal").classList.remove("show");}
+function adminLogin(){
+  const code=document.getElementById("admin-code").value.trim(),status=document.getElementById("admin-login-status");
+  if(!SCRIPT_URL.startsWith("https://script.google.com/")){status.textContent="Connect the deployed Apps Script URL in index.html first.";return;}
+  status.textContent="Checking…";
+  window.sgAdminAuthCallback=(r)=>{if(r&&r.ok){status.textContent="";document.getElementById("admin-login-view").style.display="none";document.getElementById("admin-settings-view").style.display="block";fillAdmin();}else{status.textContent="Incorrect admin code.";}};
+  const sc=document.createElement("script");sc.src=`${SCRIPT_URL}?action=auth&code=${encodeURIComponent(code)}&callback=sgAdminAuthCallback&_=${Date.now()}`;document.body.appendChild(sc);
+}
+function fillAdmin(){
+  document.getElementById("a-tier-6").value=TIERS[0].price;document.getElementById("a-tier-10").value=TIERS[1].price;document.getElementById("a-tier-25").value=TIERS[2].price;document.getElementById("a-tier-50").value=TIERS[3].price;document.getElementById("a-tier-100").value=TIERS[4].price;document.getElementById("a-free-min").value=FREE_MIN;document.getElementById("a-2xl").value=UPCHARGE["2XL"];document.getElementById("a-3xl").value=UPCHARGE["3XL"];document.getElementById("a-loc-fb").value=LOC_PRICE["Front and Back"];document.getElementById("a-loc-lcb").value=LOC_PRICE["Left Chest and Back"];document.getElementById("a-phone").value=CONTACT_PHONE;document.getElementById("a-email").value=ORDER_EMAIL;
+}
+async function saveAdminSettings(){
+  const status=document.getElementById("admin-save-status"),code=document.getElementById("admin-code").value.trim();
+  const settings={tier6:Number(document.getElementById("a-tier-6").value),tier10:Number(document.getElementById("a-tier-10").value),tier25:Number(document.getElementById("a-tier-25").value),tier50:Number(document.getElementById("a-tier-50").value),tier100:Number(document.getElementById("a-tier-100").value),freeMin:Number(document.getElementById("a-free-min").value),up2xl:Number(document.getElementById("a-2xl").value),up3xl:Number(document.getElementById("a-3xl").value),upLocFB:Number(document.getElementById("a-loc-fb").value),upLocLCB:Number(document.getElementById("a-loc-lcb").value),phone:document.getElementById("a-phone").value.trim(),email:document.getElementById("a-email").value.trim()};
+  status.textContent="Saving…";applySettings(settings);
+  try{await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"saveSettings",admin_code:code,settings})});status.textContent="Saved. Customers will receive these settings from Apps Script.";}catch(e){status.textContent="Could not save settings. Check the Apps Script deployment.";}
+}
+
+buildUI();
+loadRemoteSettings();
+</script>
+</body>
+</html>
